@@ -1,78 +1,45 @@
-const targetDate = new Date("2026-12-31T23:59:59").getTime();
+document.addEventListener("DOMContentLoaded", () => {
 
-const timer = document.getElementById("timer");
-const music = document.getElementById("bgMusic");
-const video = document.getElementById("bgVideo");
+    const targetDate = new Date("2026-12-31T23:59:59").getTime();
 
-/* =========================
-   ПОЯВЛЕНИЕ ТАЙМЕРА (16 сек)
-========================= */
+    const timer = document.getElementById("timer");
+    const music = document.getElementById("bgMusic");
+    const video = document.getElementById("bgVideo");
 
-setTimeout(() => {
-    timer.style.opacity = "1";
-}, 16000);
+    function update() {
 
-/* =========================
-   АНИМАЦИЯ ЦИФР
-========================= */
+        const now = Date.now();
+        const diff = targetDate - now;
 
-function formatWithAnimation(text) {
-    return text
-        .split("")
-        .map((char, i) => {
-            return `<span class="digit" style="animation-delay:${i * 0.03}s">${char}</span>`;
-        })
-        .join("");
-}
+        if (diff <= 0) {
+            timer.textContent = "ВРЕМЯ ПРИШЛО!";
+            return;
+        }
 
-/* =========================
-   COUNTDOWN
-========================= */
+        const d = Math.floor(diff / (1000*60*60*24));
+        const h = Math.floor((diff / (1000*60*60)) % 24);
+        const m = Math.floor((diff / (1000*60)) % 60);
+        const s = Math.floor((diff / 1000) % 60);
 
-function updateCountdown() {
-
-    const now = Date.now();
-    const distance = targetDate - now;
-
-    if (distance <= 0) {
-        timer.innerHTML = "🎉 Время пришло!";
-        clearInterval(interval);
-        return;
+        timer.textContent = `${d} д ${h} ч ${m} м ${s} с`;
     }
 
-    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    update();
+    setInterval(update, 1000);
 
-    const text =
-        `${days}д ${String(hours).padStart(2,"0")}ч ${String(minutes).padStart(2,"0")}м ${String(seconds).padStart(2,"0")}с`;
+    if (video) {
+        video.muted = true;
+        video.play().catch(()=>{});
+    }
 
-    timer.innerHTML = formatWithAnimation(text);
-}
+    if (music) {
+        music.volume = 0.4;
 
-updateCountdown();
-const interval = setInterval(updateCountdown, 1000);
+        music.play().catch(() => {
+            document.addEventListener("click", () => {
+                music.play();
+            }, { once: true });
+        });
+    }
 
-/* =========================
-   MUSIC
-========================= */
-
-if (music) {
-    music.volume = 0.4;
-
-    music.play().catch(() => {
-        document.addEventListener("click", () => {
-            music.play().catch(() => {});
-        }, { once: true });
-    });
-}
-
-/* =========================
-   VIDEO
-========================= */
-
-if (video) {
-    video.muted = true;
-    video.volume = 0;
-}
+});
