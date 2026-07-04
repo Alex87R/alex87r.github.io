@@ -41,3 +41,17 @@ function updateCountdown() {
 updateCountdown();
 
 const interval = setInterval(updateCountdown, 1000);
+const music = document.getElementById("bgMusic");
+
+// Пытаемся включить автоматически
+music.play().catch(() => {
+    // Если браузер запретил автозапуск,
+    // музыка включится после первого клика пользователя.
+    document.addEventListener(
+        "click",
+        () => {
+            music.play();
+        },
+        { once: true }
+    );
+});
