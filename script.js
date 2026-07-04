@@ -5,7 +5,7 @@ const music = document.getElementById("bgMusic");
 const video = document.getElementById("bgVideo");
 
 /* =========================
-   ТАЙМЕР ПОЯВЛЕНИЕ (17 сек)
+   ТАЙМЕР (17 сек)
 ========================= */
 
 setTimeout(() => {
@@ -13,11 +13,11 @@ setTimeout(() => {
 }, 17000);
 
 /* =========================
-   ФОРМАТ: 21 ч 45 м
+   ФОРМАТ ВЫВОДА
 ========================= */
 
-function formatTime(days, hours, minutes, seconds) {
-    return `${days} д ${hours} ч ${minutes} м ${seconds} с`;
+function formatTime(d, h, m, s) {
+    return `${d} д ${h} ч ${m} м ${s} с`;
 }
 
 /* =========================
@@ -47,7 +47,7 @@ updateCountdown();
 const interval = setInterval(updateCountdown, 1000);
 
 /* =========================
-   MUSIC
+   МУЗЫКА
 ========================= */
 
 if (music) {
@@ -61,7 +61,7 @@ if (music) {
 }
 
 /* =========================
-   VIDEO
+   ВИДЕО
 ========================= */
 
 if (video) {
