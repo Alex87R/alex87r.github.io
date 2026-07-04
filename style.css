@@ -20,7 +20,9 @@ body {
     width: 100%;
     height: 100%;
 
-    object-fit: cover;
+    object-fit: contain; /* Показывает видео полностью */
+
+    background: black;   /* Заполняет пустые области */
 
     z-index: -2;
 }
