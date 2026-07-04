@@ -1,79 +1,78 @@
-document.addEventListener("DOMContentLoaded", () => {
+const targetDate = new Date("2026-12-31T23:59:59").getTime();
 
-    const targetDate = new Date("2026-12-31T23:59:59").getTime();
+const timer = document.getElementById("timer");
+const music = document.getElementById("bgMusic");
+const video = document.getElementById("bgVideo");
 
-    const timer = document.getElementById("timer");
-    const music = document.getElementById("bgMusic");
-    const video = document.getElementById("bgVideo");
+/* =========================
+   ПОЯВЛЕНИЕ ТАЙМЕРА (16 сек)
+========================= */
 
-    /* =========================
-       ВИДЕО ПОЯВЛЕНИЕ (4 сек)
-    ========================= */
+setTimeout(() => {
+    timer.style.opacity = "1";
+}, 16000);
 
-    setTimeout(() => {
-        if (video) {
-            video.style.opacity = "1";
-            video.style.filter = "brightness(1)";
-        }
-    }, 4000);
+/* =========================
+   АНИМАЦИЯ ЦИФР
+========================= */
 
-    /* =========================
-       ТАЙМЕР ПОЯВЛЕНИЕ (17 сек)
-    ========================= */
+function formatWithAnimation(text) {
+    return text
+        .split("")
+        .map((char, i) => {
+            return `<span class="digit" style="animation-delay:${i * 0.03}s">${char}</span>`;
+        })
+        .join("");
+}
 
-    setTimeout(() => {
-        if (timer) {
-            timer.style.opacity = "1";
-        }
-    }, 17000);
+/* =========================
+   COUNTDOWN
+========================= */
 
-    /* =========================
-       ОБРАТНЫЙ ОТСЧЕТ
-    ========================= */
+function updateCountdown() {
 
-    function updateCountdown() {
+    const now = Date.now();
+    const distance = targetDate - now;
 
-        const now = Date.now();
-        const distance = targetDate - now;
-
-        if (distance <= 0) {
-            timer.textContent = "🎉 ВРЕМЯ ПРИШЛО!";
-            return;
-        }
-
-        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-        timer.textContent =
-            `${days} д ${hours} ч ${minutes} м ${seconds} с`;
+    if (distance <= 0) {
+        timer.innerHTML = "🎉 Время пришло!";
+        clearInterval(interval);
+        return;
     }
 
-    updateCountdown();
-    setInterval(updateCountdown, 1000);
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-    /* =========================
-       МУЗЫКА
-    ========================= */
+    const text =
+        `${days}д ${String(hours).padStart(2,"0")}ч ${String(minutes).padStart(2,"0")}м ${String(seconds).padStart(2,"0")}с`;
 
-    if (music) {
-        music.volume = 0.4;
+    timer.innerHTML = formatWithAnimation(text);
+}
 
-        music.play().catch(() => {
-            document.addEventListener("click", () => {
-                music.play().catch(() => {});
-            }, { once: true });
-        });
-    }
+updateCountdown();
+const interval = setInterval(updateCountdown, 1000);
 
-    /* =========================
-       ВИДЕО СТАРТ
-    ========================= */
+/* =========================
+   MUSIC
+========================= */
 
-    if (video) {
-        video.muted = true;
-        video.play().catch(() => {});
-    }
+if (music) {
+    music.volume = 0.4;
 
-});
+    music.play().catch(() => {
+        document.addEventListener("click", () => {
+            music.play().catch(() => {});
+        }, { once: true });
+    });
+}
+
+/* =========================
+   VIDEO
+========================= */
+
+if (video) {
+    video.muted = true;
+    video.volume = 0;
+}
