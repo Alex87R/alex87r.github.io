@@ -1,0 +1,1 @@
+const APP_CONFIG = { release: { date: null } };
