@@ -1,3 +1,10 @@
+@font-face {
+    font-family: "MyFont";
+    src: url("fonts/MyFont.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -8,7 +15,7 @@ body {
     width: 100%;
     height: 100vh;
     overflow: hidden;
-    font-family: Arial, Helvetica, sans-serif;
+    background: #000;
 }
 
 /* Фоновое видео */
@@ -20,9 +27,9 @@ body {
     width: 100%;
     height: 100%;
 
-    object-fit: contain; /* Показывает видео полностью */
+    object-fit: contain;
 
-    background: black;   /* Заполняет пустые области */
+    background: #000;
 
     z-index: -2;
 }
@@ -38,24 +45,58 @@ body {
     justify-content: center;
     align-items: center;
 
-    background: rgba(0,0,0,.25);
+    background: rgba(0, 0, 0, 0.2);
 
     z-index: 1;
 }
 
 /* Таймер */
 #timer {
-    color: white;
-    font-size: 72px;
-    font-weight: bold;
+    font-family: "MyFont", sans-serif;
 
-    padding: 25px 50px;
+    font-size: 110px;
+    font-weight: normal;
 
-    border-radius: 20px;
+    color: #ffffff;
 
-    background: rgba(0,0,0,.55);
+    text-align: center;
 
-    backdrop-filter: blur(8px);
+    letter-spacing: 6px;
 
-    text-shadow: 0 0 15px black;
+    user-select: none;
+
+    text-shadow:
+        0 0 10px rgba(255,255,255,.5),
+        0 0 25px rgba(255,255,255,.35),
+        0 0 45px rgba(0,0,0,.9);
+
+    animation: glow 2.5s ease-in-out infinite;
+}
+
+/* Анимация свечения */
+@keyframes glow {
+
+    0% {
+        transform: scale(1);
+        text-shadow:
+            0 0 10px rgba(255,255,255,.45),
+            0 0 25px rgba(255,255,255,.3),
+            0 0 45px rgba(0,0,0,.9);
+    }
+
+    50% {
+        transform: scale(1.03);
+        text-shadow:
+            0 0 18px rgba(255,255,255,.9),
+            0 0 40px rgba(255,255,255,.6),
+            0 0 70px rgba(0,0,0,1);
+    }
+
+    100% {
+        transform: scale(1);
+        text-shadow:
+            0 0 10px rgba(255,255,255,.45),
+            0 0 25px rgba(255,255,255,.3),
+            0 0 45px rgba(0,0,0,.9);
+    }
 }
