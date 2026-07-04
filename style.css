@@ -5,134 +5,213 @@
     font-style: normal;
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
 
 html,
-body {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    background: #000;
+body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:#000;
 }
 
 /* Плавное появление страницы */
-body {
-    animation: fadeIn 2.5s ease forwards;
+body{
+    animation:fadeIn 2.5s ease forwards;
+    font-family:"MyFont",sans-serif;
 }
 
-/* Фоновое видео */
-#bgVideo {
-    position: fixed;
-    inset: 0;
+/* ===========================
+   ФОНОВОЕ ВИДЕО
+=========================== */
 
-    width: 100%;
-    height: 100%;
+#bgVideo{
+    position:fixed;
+    inset:0;
 
-    /* Заполняет экран полностью */
-    object-fit: cover;
+    width:100%;
+    height:100%;
 
-    /* Центр кадра остается в фокусе */
-    object-position: center center;
+    object-fit:cover;
+    object-position:center center;
 
-    z-index: -2;
+    z-index:-2;
 
-    /* Небольшое уменьшение эффекта "приближения" */
-    transform: scale(1.02);
+    /* минимальное увеличение,
+       чтобы не появлялись полосы */
+    transform:scale(1.02);
+
+    /* очень медленное движение */
+    animation:videoMove 40s ease-in-out infinite alternate;
 }
 
-/* Затемнение видео */
-.overlay {
-    position: relative;
+/* ===========================
+   ЗАТЕМНЕНИЕ
+=========================== */
 
-    width: 100%;
-    height: 100vh;
+.overlay{
 
-    display: flex;
-    justify-content: center;
+    position:relative;
 
-    /* Таймер немного выше центра */
-    align-items: center;
+    width:100%;
+    height:100vh;
 
-    padding-bottom: 14vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
 
-    background: rgba(0, 0, 0, .18);
+    /* поднять таймер выше центра */
+    padding-bottom:14vh;
 
-    z-index: 1;
+    background:rgba(0,0,0,.18);
+
+    z-index:2;
 }
 
-/* Таймер */
-#timer {
+/* ===========================
+   ТАЙМЕР
+=========================== */
 
-    font-family: "MyFont", sans-serif;
+#timer{
 
-    font-size: 110px;
-    font-weight: normal;
+    font-family:"MyFont",sans-serif;
 
-    color: #fff;
+    font-size:110px;
 
-    text-align: center;
+    color:#fff;
 
-    letter-spacing: 6px;
+    text-align:center;
 
-    user-select: none;
+    letter-spacing:8px;
 
-    animation: glow 2.5s ease-in-out infinite;
+    user-select:none;
+
+    animation:glow 2.8s ease-in-out infinite;
 
     text-shadow:
-        0 0 8px rgba(255,255,255,.5),
-        0 0 18px rgba(255,255,255,.35),
-        0 0 45px rgba(0,0,0,.9);
+        0 0 10px rgba(255,255,255,.45),
+        0 0 25px rgba(255,255,255,.25),
+        0 0 60px rgba(0,0,0,.95);
 }
 
-/* Плавное появление страницы */
-@keyframes fadeIn {
+/* ===========================
+   АНИМАЦИЯ ПОЯВЛЕНИЯ
+=========================== */
 
-    from {
-        opacity: 0;
-        filter: brightness(0);
+@keyframes fadeIn{
+
+    0%{
+        opacity:0;
+        filter:brightness(0);
     }
 
-    40% {
-        opacity: 1;
-        filter: brightness(.35);
+    50%{
+        opacity:1;
+        filter:brightness(.35);
     }
 
-    100% {
-        opacity: 1;
-        filter: brightness(1);
+    100%{
+        opacity:1;
+        filter:brightness(1);
     }
 
 }
 
-/* Свечение таймера */
-@keyframes glow {
+/* ===========================
+   ЛЕГКОЕ ДВИЖЕНИЕ ВИДЕО
+=========================== */
 
-    0% {
-        transform: scale(1);
+@keyframes videoMove{
+
+    0%{
+        transform:scale(1.02) translate(0,0);
+    }
+
+    25%{
+        transform:scale(1.04) translate(-1%,-1%);
+    }
+
+    50%{
+        transform:scale(1.03) translate(1%,0);
+    }
+
+    75%{
+        transform:scale(1.04) translate(0,1%);
+    }
+
+    100%{
+        transform:scale(1.02) translate(0,0);
+    }
+
+}
+
+/* ===========================
+   СВЕЧЕНИЕ ТАЙМЕРА
+=========================== */
+
+@keyframes glow{
+
+    0%{
+        transform:scale(1);
+
         text-shadow:
-            0 0 8px rgba(255,255,255,.45),
-            0 0 20px rgba(255,255,255,.3),
-            0 0 45px rgba(0,0,0,.9);
+            0 0 10px rgba(255,255,255,.4),
+            0 0 20px rgba(255,255,255,.25),
+            0 0 45px rgba(0,0,0,.95);
     }
 
-    50% {
-        transform: scale(1.03);
+    50%{
+
+        transform:scale(1.03);
+
         text-shadow:
             0 0 18px rgba(255,255,255,.9),
             0 0 40px rgba(255,255,255,.6),
-            0 0 70px rgba(0,0,0,1);
+            0 0 80px rgba(0,0,0,1);
     }
 
-    100% {
-        transform: scale(1);
+    100%{
+
+        transform:scale(1);
+
         text-shadow:
-            0 0 8px rgba(255,255,255,.45),
-            0 0 20px rgba(255,255,255,.3),
-            0 0 45px rgba(0,0,0,.9);
+            0 0 10px rgba(255,255,255,.4),
+            0 0 20px rgba(255,255,255,.25),
+            0 0 45px rgba(0,0,0,.95);
+    }
+
+}
+
+/* ===========================
+   МОБИЛЬНЫЕ УСТРОЙСТВА
+=========================== */
+
+@media (max-width:900px){
+
+    .overlay{
+        padding-bottom:10vh;
+    }
+
+    #timer{
+        font-size:64px;
+        letter-spacing:4px;
+    }
+
+}
+
+@media (max-width:600px){
+
+    .overlay{
+        padding-bottom:8vh;
+    }
+
+    #timer{
+        font-size:42px;
+        letter-spacing:2px;
     }
 
 }
