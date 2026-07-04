@@ -9,13 +9,20 @@
 
 <body>
 
+    <!-- Фоновое видео -->
+    <video id="bgVideo" autoplay muted loop playsinline preload="auto">
+        <source src="video/background.mp4" type="video/mp4">
+        Ваш браузер не поддерживает видео.
+    </video>
+
+    <!-- Затемнение и таймер -->
     <div class="overlay">
         <div id="timer">00д 00ч 00м 00с</div>
     </div>
 
+    <!-- Фоновая музыка -->
     <audio id="bgMusic" loop>
-        <source src="audio/teaser.mp3" type="audio/mpeg">
-        Ваш браузер не поддерживает аудио.
+        <source src="audio/music.mp3" type="audio/mpeg">
     </audio>
 
     <script src="script.js"></script>
