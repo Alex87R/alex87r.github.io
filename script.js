@@ -1,16 +1,29 @@
-// ================================
+// =====================================
 // ДАТА ОКОНЧАНИЯ
-// ================================
+// =====================================
 
-// Укажите здесь нужную дату.
-// Пример: 31 декабря 2026 23:59:59
+// Измените на нужную дату
 const targetDate = new Date("2026-12-31T23:59:59").getTime();
 
-const timer = document.getElementById("timer");
+// =====================================
+// ЭЛЕМЕНТЫ
+// =====================================
 
-// ================================
+const timer = document.getElementById("timer");
+const music = document.getElementById("bgMusic");
+const video = document.getElementById("bgVideo");
+
+// =====================================
+// ПОЯВЛЕНИЕ ТАЙМЕРА ЧЕРЕЗ 5 СЕКУНД
+// =====================================
+
+setTimeout(() => {
+    timer.style.opacity = "1";
+}, 5000);
+
+// =====================================
 // ОБРАТНЫЙ ОТСЧЕТ
-// ================================
+// =====================================
 
 function updateCountdown() {
 
@@ -18,10 +31,8 @@ function updateCountdown() {
     const distance = targetDate - now;
 
     if (distance <= 0) {
-
         timer.textContent = "🎉 Время пришло!";
         clearInterval(interval);
-
         return;
     }
 
@@ -49,53 +60,47 @@ function updateCountdown() {
         `${String(seconds).padStart(2, "0")}с`;
 }
 
-// Первый запуск
 updateCountdown();
 
-// Обновление каждую секунду
 const interval = setInterval(updateCountdown, 1000);
 
-// ================================
-// ФОНОВАЯ МУЗЫКА
-// ================================
+// =====================================
+// НАСТРОЙКА ВИДЕО
+// =====================================
 
-const music = document.getElementById("bgMusic");
+if (video) {
+
+    // Видео всегда без звука
+    video.muted = true;
+    video.volume = 0;
+
+    // Запуск после загрузки страницы
+    video.play().catch(() => {});
+
+    // На случай, если браузер остановит видео
+    video.addEventListener("ended", () => {
+        video.play();
+    });
+
+}
+
+// =====================================
+// ФОНОВАЯ МУЗЫКА
+// =====================================
 
 if (music) {
 
-    // Громкость (от 0.0 до 1.0)
+    music.loop = true;
     music.volume = 0.4;
 
     // Попытка автозапуска
     music.play().catch(() => {
 
-        // Если браузер заблокировал —
-        // музыка начнет играть после первого клика
+        // Если браузер запретил — запуск после первого клика
         document.addEventListener("click", () => {
-
             music.play().catch(() => {});
-
         }, { once: true });
 
-    });
-
-}
-
-// ================================
-// НАСТРОЙКА ВИДЕО
-// ================================
-
-const video = document.getElementById("bgVideo");
-
-if (video) {
-
-    // Гарантированно отключаем звук видео
-    video.muted = true;
-    video.volume = 0;
-
-    // Если видео остановилось — запускаем снова
-    video.addEventListener("ended", () => {
-        video.play();
     });
 
 }
