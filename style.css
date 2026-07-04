@@ -11,30 +11,40 @@
     box-sizing: border-box;
 }
 
+html,
 body {
     width: 100%;
-    height: 100vh;
+    height: 100%;
     overflow: hidden;
     background: #000;
+}
+
+/* Плавное появление страницы */
+body {
+    animation: fadeIn 2.5s ease forwards;
 }
 
 /* Фоновое видео */
 #bgVideo {
     position: fixed;
-    top: 0;
-    left: 0;
+    inset: 0;
 
     width: 100%;
     height: 100%;
 
-    object-fit: contain;
+    /* Заполняет экран полностью */
+    object-fit: cover;
 
-    background: #000;
+    /* Центр кадра остается в фокусе */
+    object-position: center center;
 
     z-index: -2;
+
+    /* Небольшое уменьшение эффекта "приближения" */
+    transform: scale(1.02);
 }
 
-/* Затемнение */
+/* Затемнение видео */
 .overlay {
     position: relative;
 
@@ -43,21 +53,26 @@ body {
 
     display: flex;
     justify-content: center;
+
+    /* Таймер немного выше центра */
     align-items: center;
 
-    background: rgba(0, 0, 0, 0.2);
+    padding-bottom: 14vh;
+
+    background: rgba(0, 0, 0, .18);
 
     z-index: 1;
 }
 
 /* Таймер */
 #timer {
+
     font-family: "MyFont", sans-serif;
 
     font-size: 110px;
     font-weight: normal;
 
-    color: #ffffff;
+    color: #fff;
 
     text-align: center;
 
@@ -65,22 +80,42 @@ body {
 
     user-select: none;
 
-    text-shadow:
-        0 0 10px rgba(255,255,255,.5),
-        0 0 25px rgba(255,255,255,.35),
-        0 0 45px rgba(0,0,0,.9);
-
     animation: glow 2.5s ease-in-out infinite;
+
+    text-shadow:
+        0 0 8px rgba(255,255,255,.5),
+        0 0 18px rgba(255,255,255,.35),
+        0 0 45px rgba(0,0,0,.9);
 }
 
-/* Анимация свечения */
+/* Плавное появление страницы */
+@keyframes fadeIn {
+
+    from {
+        opacity: 0;
+        filter: brightness(0);
+    }
+
+    40% {
+        opacity: 1;
+        filter: brightness(.35);
+    }
+
+    100% {
+        opacity: 1;
+        filter: brightness(1);
+    }
+
+}
+
+/* Свечение таймера */
 @keyframes glow {
 
     0% {
         transform: scale(1);
         text-shadow:
-            0 0 10px rgba(255,255,255,.45),
-            0 0 25px rgba(255,255,255,.3),
+            0 0 8px rgba(255,255,255,.45),
+            0 0 20px rgba(255,255,255,.3),
             0 0 45px rgba(0,0,0,.9);
     }
 
@@ -95,8 +130,9 @@ body {
     100% {
         transform: scale(1);
         text-shadow:
-            0 0 10px rgba(255,255,255,.45),
-            0 0 25px rgba(255,255,255,.3),
+            0 0 8px rgba(255,255,255,.45),
+            0 0 20px rgba(255,255,255,.3),
             0 0 45px rgba(0,0,0,.9);
     }
+
 }
