@@ -1,78 +1,79 @@
-const targetDate = new Date("2026-12-31T23:59:59").getTime();
+document.addEventListener("DOMContentLoaded", () => {
 
-const timer = document.getElementById("timer");
-const music = document.getElementById("bgMusic");
-const video = document.getElementById("bgVideo");
+    const targetDate = new Date("2026-12-31T23:59:59").getTime();
 
-/* =========================
-   ВИДЕО ПОЯВЛЕНИЕ (4 сек)
-========================= */
+    const timer = document.getElementById("timer");
+    const music = document.getElementById("bgMusic");
+    const video = document.getElementById("bgVideo");
 
-setTimeout(() => {
-    video.classList.add("show");
-}, 4000);
+    /* =========================
+       ВИДЕО ПОЯВЛЕНИЕ (4 сек)
+    ========================= */
 
-/* =========================
-   ТАЙМЕР ПОЯВЛЕНИЕ (17 сек)
-========================= */
+    setTimeout(() => {
+        if (video) {
+            video.style.opacity = "1";
+            video.style.filter = "brightness(1)";
+        }
+    }, 4000);
 
-setTimeout(() => {
-    timer.classList.add("show");
-}, 17000);
+    /* =========================
+       ТАЙМЕР ПОЯВЛЕНИЕ (17 сек)
+    ========================= */
 
-/* =========================
-   ФОРМАТ
-========================= */
+    setTimeout(() => {
+        if (timer) {
+            timer.style.opacity = "1";
+        }
+    }, 17000);
 
-function formatTime(d, h, m, s) {
-    return `${d} д ${h} ч ${m} м ${s} с`;
-}
+    /* =========================
+       ОБРАТНЫЙ ОТСЧЕТ
+    ========================= */
 
-/* =========================
-   COUNTDOWN
-========================= */
+    function updateCountdown() {
 
-function updateCountdown() {
+        const now = Date.now();
+        const distance = targetDate - now;
 
-    const now = Date.now();
-    const distance = targetDate - now;
+        if (distance <= 0) {
+            timer.textContent = "🎉 ВРЕМЯ ПРИШЛО!";
+            return;
+        }
 
-    if (distance <= 0) {
-        timer.innerHTML = "🎉 Время пришло!";
-        clearInterval(interval);
-        return;
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        timer.textContent =
+            `${days} д ${hours} ч ${minutes} м ${seconds} с`;
     }
 
-    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
 
-    timer.innerHTML = formatTime(days, hours, minutes, seconds);
-}
+    /* =========================
+       МУЗЫКА
+    ========================= */
 
-updateCountdown();
-const interval = setInterval(updateCountdown, 1000);
+    if (music) {
+        music.volume = 0.4;
 
-/* =========================
-   МУЗЫКА
-========================= */
+        music.play().catch(() => {
+            document.addEventListener("click", () => {
+                music.play().catch(() => {});
+            }, { once: true });
+        });
+    }
 
-if (music) {
-    music.volume = 0.4;
+    /* =========================
+       ВИДЕО СТАРТ
+    ========================= */
 
-    music.play().catch(() => {
-        document.addEventListener("click", () => {
-            music.play().catch(() => {});
-        }, { once: true });
-    });
-}
+    if (video) {
+        video.muted = true;
+        video.play().catch(() => {});
+    }
 
-/* =========================
-   ВИДЕО (на всякий случай)
-========================= */
-
-if (video) {
-    video.muted = true;
-    video.volume = 0;
-}
+});
