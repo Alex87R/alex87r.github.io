@@ -5,24 +5,19 @@ const music = document.getElementById("bgMusic");
 const video = document.getElementById("bgVideo");
 
 /* =========================
-   ПОЯВЛЕНИЕ ТАЙМЕРА (16 сек)
+   ТАЙМЕР ПОЯВЛЕНИЕ (17 сек)
 ========================= */
 
 setTimeout(() => {
     timer.style.opacity = "1";
-}, 16000);
+}, 17000);
 
 /* =========================
-   АНИМАЦИЯ ЦИФР
+   ФОРМАТ: 21 ч 45 м
 ========================= */
 
-function formatWithAnimation(text) {
-    return text
-        .split("")
-        .map((char, i) => {
-            return `<span class="digit" style="animation-delay:${i * 0.03}s">${char}</span>`;
-        })
-        .join("");
+function formatTime(days, hours, minutes, seconds) {
+    return `${days} д ${hours} ч ${minutes} м ${seconds} с`;
 }
 
 /* =========================
@@ -45,10 +40,7 @@ function updateCountdown() {
     const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-    const text =
-        `${days}д ${String(hours).padStart(2,"0")}ч ${String(minutes).padStart(2,"0")}м ${String(seconds).padStart(2,"0")}с`;
-
-    timer.innerHTML = formatWithAnimation(text);
+    timer.innerHTML = formatTime(days, hours, minutes, seconds);
 }
 
 updateCountdown();
