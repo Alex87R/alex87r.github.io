@@ -1,222 +1,120 @@
 @font-face {
     font-family: "MyFont";
     src: url("fonts/MyFont.ttf") format("truetype");
-    font-weight: normal;
-    font-style: normal;
 }
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-html,
-body{
-    width:100%;
-    height:100%;
-    overflow:hidden;
-    background:#000;
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #000;
 }
 
-/* Плавное появление страницы через 3 секунды */
-body{
-    opacity:0;
-    animation:fadeIn 2s ease forwards;
-    animation-delay:3s;
+/* =========================
+   CINEMATIC INTRO (8 сек)
+========================= */
+
+body {
+    opacity: 0;
+    animation: fadeIn 3s ease forwards;
+    animation-delay: 8s;
 }
 
-/* ===========================
-   ФОНОВОЕ ВИДЕО
-=========================== */
-
-#bgVideo{
-
-    position:fixed;
-    inset:0;
-
-    width:100%;
-    height:100%;
-
-    object-fit:cover;
-    object-position:center center;
-
-    z-index:-2;
-
-    /* Минимальное увеличение,
-       чтобы экран всегда был заполнен */
-    transform:scale(1.01);
-
-    animation:videoMove 80s ease-in-out infinite alternate;
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        filter: brightness(0);
+    }
+    to {
+        opacity: 1;
+        filter: brightness(1);
+    }
 }
 
-/* ===========================
-   ЗАТЕМНЕНИЕ
-=========================== */
+/* =========================
+   VIDEO (БЕЗ ЗУМА)
+========================= */
 
-.overlay{
+#bgVideo {
+    position: fixed;
+    inset: 0;
 
-    position:relative;
+    width: 100%;
+    height: 100%;
 
-    width:100%;
-    height:100vh;
+    object-fit: cover;
+    object-position: center;
 
-    display:flex;
-    justify-content:center;
-    align-items:center;
-
-    /* Таймер чуть выше центра */
-    padding-bottom:14vh;
-
-    background:rgba(0,0,0,.16);
-
-    z-index:2;
+    z-index: -1;
 }
 
-/* ===========================
-   ТАЙМЕР
-=========================== */
+/* =========================
+   OVERLAY
+========================= */
 
-#timer{
+.overlay {
+    width: 100%;
+    height: 100vh;
 
-    opacity:0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-    transition:opacity 2s ease;
+    padding-bottom: 12vh;
+}
 
-    font-family:"MyFont",sans-serif;
+/* =========================
+   TIMER
+========================= */
 
-    font-size:110px;
+#timer {
+    opacity: 0;
+    transition: opacity 2s ease;
 
-    color:#fff;
+    font-family: "MyFont", sans-serif;
+    font-size: 110px;
+    color: #fff;
 
-    text-align:center;
-
-    letter-spacing:8px;
-
-    user-select:none;
-
-    animation:glow 3s ease-in-out infinite;
+    text-align: center;
+    letter-spacing: 6px;
 
     text-shadow:
-        0 0 8px rgba(255,255,255,.45),
-        0 0 20px rgba(255,255,255,.25),
-        0 0 50px rgba(0,0,0,.95);
-
+        0 0 10px rgba(255,255,255,.45),
+        0 0 30px rgba(255,255,255,.25),
+        0 0 80px rgba(0,0,0,.9);
 }
 
-/* ===========================
-   ПОЯВЛЕНИЕ ФОНА
-=========================== */
+/* =========================
+   DIGIT ANIMATION
+========================= */
 
-@keyframes fadeIn{
-
-    from{
-        opacity:0;
-        filter:brightness(0);
-    }
-
-    to{
-        opacity:1;
-        filter:brightness(1);
-    }
-
+.digit {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(10px);
+    animation: digitIn 0.4s ease forwards;
 }
 
-/* ===========================
-   МЕДЛЕННОЕ ДВИЖЕНИЕ ВИДЕО
-=========================== */
-
-@keyframes videoMove{
-
-    0%{
-        transform:scale(1.01) translate(0,0);
+@keyframes digitIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
-
-    25%{
-        transform:scale(1.015) translate(-0.3%,-0.2%);
-    }
-
-    50%{
-        transform:scale(1.02) translate(0.3%,0);
-    }
-
-    75%{
-        transform:scale(1.015) translate(0,0.2%);
-    }
-
-    100%{
-        transform:scale(1.01) translate(0,0);
-    }
-
 }
 
-/* ===========================
-   СВЕЧЕНИЕ
-=========================== */
+/* =========================
+   RESPONSIVE
+========================= */
 
-@keyframes glow{
-
-    0%{
-
-        transform:scale(1);
-
-        text-shadow:
-            0 0 8px rgba(255,255,255,.45),
-            0 0 20px rgba(255,255,255,.25),
-            0 0 45px rgba(0,0,0,.95);
-
+@media (max-width: 768px) {
+    #timer {
+        font-size: 60px;
+        letter-spacing: 3px;
     }
-
-    50%{
-
-        transform:scale(1.03);
-
-        text-shadow:
-            0 0 18px rgba(255,255,255,.9),
-            0 0 40px rgba(255,255,255,.6),
-            0 0 80px rgba(0,0,0,1);
-
-    }
-
-    100%{
-
-        transform:scale(1);
-
-        text-shadow:
-            0 0 8px rgba(255,255,255,.45),
-            0 0 20px rgba(255,255,255,.25),
-            0 0 45px rgba(0,0,0,.95);
-
-    }
-
-}
-
-/* ===========================
-   АДАПТАЦИЯ
-=========================== */
-
-@media (max-width:900px){
-
-    .overlay{
-        padding-bottom:10vh;
-    }
-
-    #timer{
-        font-size:64px;
-        letter-spacing:4px;
-    }
-
-}
-
-@media (max-width:600px){
-
-    .overlay{
-        padding-bottom:8vh;
-    }
-
-    #timer{
-        font-size:42px;
-        letter-spacing:2px;
-    }
-
 }
