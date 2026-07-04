@@ -1,9 +1,13 @@
+// ==========================
+// ДАТА ОКОНЧАНИЯ
+// ==========================
+
 const targetDate = new Date("2026-12-31T23:59:59").getTime();
 
 const timer = document.getElementById("timer");
-const music = document.getElementById("bgMusic");
 
 function updateCountdown() {
+
     const now = Date.now();
     const distance = targetDate - now;
 
@@ -19,19 +23,31 @@ function updateCountdown() {
     const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
     timer.textContent =
-        `${days}д ${String(hours).padStart(2, "0")}ч ${String(minutes).padStart(2, "0")}м ${String(seconds).padStart(2, "0")}с`;
+        `${days}д ${String(hours).padStart(2,"0")}ч ${String(minutes).padStart(2,"0")}м ${String(seconds).padStart(2,"0")}с`;
 }
 
 updateCountdown();
+
 const interval = setInterval(updateCountdown, 1000);
 
-// Музыка
+// ==========================
+// ФОНОВАЯ МУЗЫКА
+// ==========================
+
+const music = document.getElementById("bgMusic");
+
 if (music) {
+
     music.volume = 0.5;
 
     music.play().catch(() => {
+
         document.addEventListener("click", () => {
+
             music.play().catch(() => {});
+
         }, { once: true });
+
     });
+
 }
