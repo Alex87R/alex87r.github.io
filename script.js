@@ -5,15 +5,23 @@ const music = document.getElementById("bgMusic");
 const video = document.getElementById("bgVideo");
 
 /* =========================
-   ТАЙМЕР (17 сек)
+   ВИДЕО ПОЯВЛЕНИЕ (4 сек)
 ========================= */
 
 setTimeout(() => {
-    timer.style.opacity = "1";
+    video.classList.add("show");
+}, 4000);
+
+/* =========================
+   ТАЙМЕР ПОЯВЛЕНИЕ (17 сек)
+========================= */
+
+setTimeout(() => {
+    timer.classList.add("show");
 }, 17000);
 
 /* =========================
-   ФОРМАТ ВЫВОДА
+   ФОРМАТ
 ========================= */
 
 function formatTime(d, h, m, s) {
@@ -61,7 +69,7 @@ if (music) {
 }
 
 /* =========================
-   ВИДЕО
+   ВИДЕО (на всякий случай)
 ========================= */
 
 if (video) {
