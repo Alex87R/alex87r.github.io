@@ -17,7 +17,7 @@ html, body {
 }
 
 /* =========================
-   ВИДЕО (4 сек появление)
+   ВИДЕО (по умолчанию скрыто)
 ========================= */
 
 #bgVideo {
@@ -35,21 +35,13 @@ html, body {
     opacity: 0;
     filter: brightness(0);
 
-    animation: videoFadeIn 3s ease forwards;
-    animation-delay: 4s;
-
-    transform: none;
+    transition: opacity 3s ease, filter 3s ease;
 }
 
-@keyframes videoFadeIn {
-    from {
-        opacity: 0;
-        filter: brightness(0);
-    }
-    to {
-        opacity: 1;
-        filter: brightness(1);
-    }
+/* класс включения видео */
+#bgVideo.show {
+    opacity: 1;
+    filter: brightness(1);
 }
 
 /* =========================
@@ -76,12 +68,17 @@ html, body {
     color: #fff;
 
     text-align: center;
+
     letter-spacing: 6px;
 
     text-shadow:
         0 0 10px rgba(255,255,255,.4),
         0 0 30px rgba(255,255,255,.25),
         0 0 80px rgba(0,0,0,.9);
+}
+
+#timer.show {
+    opacity: 1;
 }
 
 /* =========================
