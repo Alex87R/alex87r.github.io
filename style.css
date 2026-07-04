@@ -17,7 +17,7 @@ html, body {
 }
 
 /* =========================
-   ВИДЕО (4 сек fade-in)
+   ВИДЕО (4 сек появление)
 ========================= */
 
 #bgVideo {
@@ -27,20 +27,21 @@ html, body {
     width: 100%;
     height: 100%;
 
-    object-fit: cover;      /* 4K/16:9 без искажений */
+    object-fit: cover;
     object-position: center;
 
     z-index: -1;
 
     opacity: 0;
-    animation: videoFade 3s ease forwards;
+    filter: brightness(0);
+
+    animation: videoFadeIn 3s ease forwards;
     animation-delay: 4s;
 
-    /* ВАЖНО: НИКАКИХ transform — убираем zoom полностью */
     transform: none;
 }
 
-@keyframes videoFade {
+@keyframes videoFadeIn {
     from {
         opacity: 0;
         filter: brightness(0);
@@ -52,7 +53,7 @@ html, body {
 }
 
 /* =========================
-   ТАЙМЕР (появление 17 сек)
+   ТАЙМЕР
 ========================= */
 
 .overlay {
@@ -75,13 +76,12 @@ html, body {
     color: #fff;
 
     text-align: center;
-
     letter-spacing: 6px;
 
     text-shadow:
         0 0 10px rgba(255,255,255,.4),
         0 0 30px rgba(255,255,255,.25),
-        0 0 70px rgba(0,0,0,.9);
+        0 0 80px rgba(0,0,0,.9);
 }
 
 /* =========================
