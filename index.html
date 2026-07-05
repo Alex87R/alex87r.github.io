@@ -59,7 +59,7 @@ video.bg.show {
   pointer-events: none;
 }
 
-/* ТАЙМЕР (центр) */
+/* ТАЙМЕР (СМЕЩЕНИЕ ВВЕРХ ЗДЕСЬ!) */
 .timer {
   position: fixed;
   inset: 0;
@@ -84,12 +84,9 @@ video.bg.show {
 
   opacity: 0;
   animation: fadeInUp 1.5s ease forwards;
-}
 
-/* 🔥 СМЕЩЕНИЕ ТАЙМЕРА ВВЕРХ */
-.timer span {
-  display: inline-block;
-  transform: translateY(-7vh);
+  /* 🔥 ВОТ ГЛАВНОЕ ИЗМЕНЕНИЕ */
+  transform: translateY(-6vh);
 }
 
 /* ПОДСКАЗКА */
@@ -112,8 +109,12 @@ video.bg.show {
 
 /* АНИМАЦИЯ */
 @keyframes fadeInUp {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 </style>
 </head>
@@ -134,9 +135,7 @@ video.bg.show {
 </audio>
 
 <!-- ТАЙМЕР -->
-<div class="timer">
-  <span id="timer">Загрузка...</span>
-</div>
+<div class="timer" id="timer">Загрузка...</div>
 
 <!-- ПОДСКАЗКА -->
 <div class="hint" id="hint">
