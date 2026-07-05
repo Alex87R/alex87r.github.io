@@ -33,13 +33,11 @@ video.bg {
   top: 40%;
   left: 50%;
   transform: translate(-50%, -60%);
-
   color: white;
   font-family: "MyFont", sans-serif;
   font-size: clamp(28px, 6vw, 78px);
   text-align: center;
   text-shadow: 0 0 10px rgba(0,0,0,0.7);
-
   opacity: 0;
   animation: fadeInUp 1.5s ease forwards;
 }
@@ -50,25 +48,41 @@ video.bg {
     transform: translate(-50%, -50%);
   }
 }
+
+/* подсказка для клика */
+#hint {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  font-family: sans-serif;
+  font-size: 14px;
+  opacity: 0.7;
+}
 </style>
 </head>
 
 <body>
 
-<!-- видео фон -->
+<!-- видео -->
 <video class="bg" autoplay muted loop playsinline>
   <source src="video/background.mp4" type="video/mp4">
 </video>
 
 <!-- музыка -->
-<audio id="music" autoplay loop>
+<audio id="music" loop>
   <source src="audio/music.mp3" type="audio/mpeg">
 </audio>
 
 <!-- таймер -->
 <div class="timer" id="timer">Загрузка...</div>
 
+<!-- подсказка -->
+<div id="hint">Нажмите на экран, если музыка не включилась</div>
+
 <script>
+// таймер
 const targetDate = new Date("2026-12-31T00:00:00").getTime();
 
 function updateTimer() {
@@ -91,6 +105,25 @@ function updateTimer() {
 
 updateTimer();
 setInterval(updateTimer, 1000);
+
+// музыка (попытка автозапуска)
+window.addEventListener("load", () => {
+  const music = document.getElementById("music");
+  music.volume = 0.5;
+
+  const playPromise = music.play();
+  if (playPromise !== undefined) {
+    playPromise.catch(() => {
+      console.log("Autoplay blocked");
+    });
+  }
+});
+
+// запуск по клику (100% работает)
+document.addEventListener("click", () => {
+  const music = document.getElementById("music");
+  music.play();
+});
 </script>
 
 </body>
