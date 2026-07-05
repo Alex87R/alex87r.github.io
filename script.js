@@ -3,26 +3,22 @@ const targetDate = new Date("2026-12-31T23:59:59").getTime();
 const timer = document.getElementById("timer");
 const music = document.getElementById("bgMusic");
 const video = document.getElementById("bgVideo");
+const overlay = document.querySelector(".overlay");
 
 /* =========================
    ПОЯВЛЕНИЕ ТАЙМЕРА (16 сек)
 ========================= */
 
 setTimeout(() => {
-    timer.style.opacity = "1";
+    overlay.classList.add("show");
 }, 16000);
 
 /* =========================
-   АНИМАЦИЯ ЦИФР
+   ПРОБЕЛЫ МЕЖДУ СИМВОЛАМИ
 ========================= */
 
-function formatWithAnimation(text) {
-    return text
-        .split("")
-        .map((char, i) => {
-            return `<span class="digit" style="animation-delay:${i * 0.03}s">${char}</span>`;
-        })
-        .join("");
+function addSpaces(text) {
+    return text.split("").join(" ");
 }
 
 /* =========================
@@ -35,7 +31,7 @@ function updateCountdown() {
     const distance = targetDate - now;
 
     if (distance <= 0) {
-        timer.innerHTML = "🎉 Время пришло!";
+        timer.textContent = "🎉 Время пришло!";
         clearInterval(interval);
         return;
     }
@@ -48,7 +44,7 @@ function updateCountdown() {
     const text =
         `${days}д ${String(hours).padStart(2,"0")}ч ${String(minutes).padStart(2,"0")}м ${String(seconds).padStart(2,"0")}с`;
 
-    timer.innerHTML = formatWithAnimation(text);
+    timer.textContent = addSpaces(text);
 }
 
 updateCountdown();
@@ -74,5 +70,10 @@ if (music) {
 
 if (video) {
     video.muted = true;
-    video.volume = 0;
+
+    video.play().catch(() => {
+        document.addEventListener("click", () => {
+            video.play().catch(() => {});
+        }, { once: true });
+    });
 }
