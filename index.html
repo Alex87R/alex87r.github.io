@@ -59,7 +59,7 @@ video.bg.show {
   pointer-events: none;
 }
 
-/* ТАЙМЕР (СТАБИЛЬНЫЙ ЦЕНТР) */
+/* ТАЙМЕР (чуть выше центра) */
 .timer {
   position: fixed;
   inset: 0;
@@ -86,7 +86,13 @@ video.bg.show {
   animation: fadeInUp 1.5s ease forwards;
 }
 
-/* ПОДСКАЗКА (СТАБИЛЬНАЯ) */
+/* смещение вверх */
+.timer span {
+  transform: translateY(-8vh);
+  display: inline-block;
+}
+
+/* ПОДСКАЗКА */
 .hint {
   position: fixed;
   left: 50%;
@@ -132,7 +138,9 @@ video.bg.show {
 </audio>
 
 <!-- ТАЙМЕР -->
-<div class="timer" id="timer">Загрузка...</div>
+<div class="timer">
+  <span id="timer">Загрузка...</span>
+</div>
 
 <!-- ПОДСКАЗКА -->
 <div class="hint" id="hint">
@@ -173,17 +181,12 @@ const video = document.querySelector("video.bg");
 
 document.addEventListener("click", () => {
 
-  // видео появляется
   video.classList.add("show");
-
-  // чёрный экран исчезает
   overlay.classList.add("hide");
 
-  // текст исчезает
   hint.style.opacity = "0";
   setTimeout(() => hint.style.display = "none", 500);
 
-  // музыка
   music.volume = 0.5;
   music.play().catch(() => {});
 
