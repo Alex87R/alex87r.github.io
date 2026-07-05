@@ -4,13 +4,16 @@ const timer = document.getElementById("timer");
 const music = document.getElementById("bgMusic");
 const video = document.getElementById("bgVideo");
 
+let interval;
+let timerStarted = false;
+
 /* =========================
-   ПОЯВЛЕНИЕ ТАЙМЕРА (16 сек)
+   ФОРМАТ С ПРОБЕЛАМИ
 ========================= */
 
-setTimeout(() => {
-    timer.style.opacity = "1";
-}, 16000);
+function formatTime(d, h, m, s) {
+    return `${d} ч ${h} м ${m} с`;
+}
 
 /* =========================
    АНИМАЦИЯ ЦИФР
@@ -30,7 +33,6 @@ function formatWithAnimation(text) {
 ========================= */
 
 function updateCountdown() {
-
     const now = Date.now();
     const distance = targetDate - now;
 
@@ -45,34 +47,60 @@ function updateCountdown() {
     const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-    const text =
-        `${days}д ${String(hours).padStart(2,"0")}ч ${String(minutes).padStart(2,"0")}м ${String(seconds).padStart(2,"0")}с`;
+    const text = formatTime(
+        days,
+        String(hours).padStart(2, "0"),
+        String(minutes).padStart(2, "0"),
+        String(seconds).padStart(2, "0")
+    );
 
     timer.innerHTML = formatWithAnimation(text);
 }
 
-updateCountdown();
-const interval = setInterval(updateCountdown, 1000);
-
 /* =========================
-   MUSIC
+   START TIMER
 ========================= */
 
-if (music) {
-    music.volume = 0.4;
+function startTimer() {
+    if (timerStarted) return;
+    timerStarted = true;
 
-    music.play().catch(() => {
-        document.addEventListener("click", () => {
-            music.play().catch(() => {});
-        }, { once: true });
-    });
+    updateCountdown();
+    interval = setInterval(updateCountdown, 1000);
 }
 
 /* =========================
-   VIDEO
+   INIT
 ========================= */
 
-if (video) {
-    video.muted = true;
-    video.volume = 0;
-}
+window.addEventListener("load", () => {
+
+    /* AUDIO */
+    if (music) {
+        music.volume = 0.4;
+
+        music.play().catch(() => {
+            document.addEventListener("click", () => {
+                music.play().catch(() => {});
+            }, { once: true });
+        });
+    }
+
+    /* VIDEO */
+    if (video) {
+        video.muted = true;
+        video.volume = 0;
+        video.play().catch(() => {});
+    }
+
+    /* 🎥 VIDEO FADE 4s → 16s */
+    setTimeout(() => {
+        video.style.animation = "videoFadeIn 12s linear forwards";
+    }, 4000);
+
+    /* ⏳ TIMER SHOW + START 17s */
+    setTimeout(() => {
+        timer.style.opacity = "1";
+        startTimer();
+    }, 17000);
+});
