@@ -59,14 +59,17 @@ video.bg.show {
   pointer-events: none;
 }
 
-/* ТАЙМЕР (СМЕЩЕНИЕ ВВЕРХ ЗДЕСЬ!) */
+/* ТАЙМЕР — стабильное поднятие */
 .timer {
   position: fixed;
   inset: 0;
 
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
+
+  /* 🔥 ключевое смещение вверх */
+  padding-top: 35vh;
 
   color: white;
   font-family: "MyFont", sans-serif;
@@ -84,9 +87,13 @@ video.bg.show {
 
   opacity: 0;
   animation: fadeInUp 1.5s ease forwards;
+}
 
-  /* 🔥 ВОТ ГЛАВНОЕ ИЗМЕНЕНИЕ */
-  transform: translateY(-6vh);
+/* адаптация под телефон */
+@media (max-width: 768px) {
+  .timer {
+    padding-top: 28vh;
+  }
 }
 
 /* ПОДСКАЗКА */
