@@ -18,7 +18,13 @@ html, body {
   background: black;
 }
 
-/* видео */
+/* фикс для мобильных viewport */
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* ВИДЕО */
 video.bg {
   position: fixed;
   top: 0;
@@ -37,12 +43,13 @@ video.bg.show {
   opacity: 1;
 }
 
-/* чёрный экран */
+/* ЧЁРНЫЙ ЭКРАН */
 .overlay {
   position: fixed;
   inset: 0;
   background: black;
   z-index: 1;
+
   opacity: 1;
   transition: opacity 2s ease;
 }
@@ -52,12 +59,14 @@ video.bg.show {
   pointer-events: none;
 }
 
-/* таймер */
+/* ТАЙМЕР (СТАБИЛЬНЫЙ ЦЕНТР) */
 .timer {
-  position: absolute;
-  top: 40%;
-  left: 50%;
-  transform: translate(-50%, -60%);
+  position: fixed;
+  inset: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   color: white;
   font-family: "MyFont", sans-serif;
@@ -77,51 +86,55 @@ video.bg.show {
   animation: fadeInUp 1.5s ease forwards;
 }
 
-@keyframes fadeInUp {
-  to {
-    opacity: 1;
-    transform: translate(-50%, -50%);
-  }
-}
-
-/* подсказка */
+/* ПОДСКАЗКА (СТАБИЛЬНАЯ) */
 .hint {
-  position: absolute;
-  bottom: 20px;
+  position: fixed;
   left: 50%;
+  bottom: 20px;
   transform: translateX(-50%);
+
+  width: 90%;
+  text-align: center;
 
   color: white;
   font-family: Arial, sans-serif;
   font-size: 14px;
   opacity: 0.7;
 
-  transition: opacity .5s;
-
   z-index: 2;
+}
+
+/* АНИМАЦИЯ */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<!-- видео -->
+<!-- ВИДЕО -->
 <video class="bg" autoplay muted loop playsinline>
   <source src="video/background.mp4" type="video/mp4">
 </video>
 
-<!-- чёрный фон -->
+<!-- ЧЁРНЫЙ ФОН -->
 <div class="overlay" id="overlay"></div>
 
-<!-- музыка -->
+<!-- МУЗЫКА -->
 <audio id="music" loop>
   <source src="audio/music.mp3" type="audio/mpeg">
 </audio>
 
-<!-- таймер -->
+<!-- ТАЙМЕР -->
 <div class="timer" id="timer">Загрузка...</div>
 
-<!-- подсказка -->
+<!-- ПОДСКАЗКА -->
 <div class="hint" id="hint">
   Нажмите в любом месте экрана, чтобы включить звук 🔊
 </div>
@@ -130,6 +143,7 @@ video.bg.show {
 
 const targetDate = new Date("2026-12-31T00:00:00").getTime();
 
+/* ТАЙМЕР */
 function updateTimer() {
   const now = Date.now();
   const diff = targetDate - now;
@@ -151,6 +165,7 @@ function updateTimer() {
 updateTimer();
 setInterval(updateTimer, 1000);
 
+/* КЛИК → видео + музыка */
 const overlay = document.getElementById("overlay");
 const hint = document.getElementById("hint");
 const music = document.getElementById("music");
@@ -161,22 +176,16 @@ document.addEventListener("click", () => {
   // видео появляется
   video.classList.add("show");
 
-  // убрать чёрный экран
+  // чёрный экран исчезает
   overlay.classList.add("hide");
 
-  // убрать текст
+  // текст исчезает
   hint.style.opacity = "0";
   setTimeout(() => hint.style.display = "none", 500);
 
-  // 🎵 МУЗЫКА (строго после клика)
+  // музыка
   music.volume = 0.5;
-  const playPromise = music.play();
-
-  if (playPromise !== undefined) {
-    playPromise.catch(() => {
-      console.log("Автовоспроизведение заблокировано браузером");
-    });
-  }
+  music.play().catch(() => {});
 
 }, { once: true });
 
