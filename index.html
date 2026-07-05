@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Таймер</title>
+<title>Обратный отсчет</title>
 
 <style>
 @font-face {
@@ -87,7 +87,7 @@ video.bg.show {
   transform: translateY(-8%);
 }
 
-/* ПОДСКАЗКА (ВАЖНО: добавили transition) */
+/* ПОДСКАЗКА */
 .hint {
   position: fixed;
   left: 50%;
@@ -104,7 +104,7 @@ video.bg.show {
 
   z-index: 2;
 
-  transition: opacity 0.8s ease; /* 👈 плавное исчезновение */
+  transition: opacity 0.8s ease;
 }
 
 /* АНИМАЦИЯ */
@@ -142,7 +142,6 @@ video.bg.show {
 
 const targetDate = new Date("2026-12-31T00:00:00").getTime();
 
-/* ТАЙМЕР */
 function updateTimer() {
   const now = Date.now();
   const diff = targetDate - now;
@@ -164,7 +163,6 @@ function updateTimer() {
 updateTimer();
 setInterval(updateTimer, 1000);
 
-/* КЛИК → видео + музыка */
 const overlay = document.getElementById("overlay");
 const hint = document.getElementById("hint");
 const music = document.getElementById("music");
@@ -175,12 +173,8 @@ document.addEventListener("click", () => {
   video.classList.add("show");
   overlay.classList.add("hide");
 
-  /* плавное исчезновение текста */
   hint.style.opacity = "0";
-
-  setTimeout(() => {
-    hint.style.display = "none";
-  }, 800);
+  setTimeout(() => hint.style.display = "none", 800);
 
   music.volume = 0.5;
   music.play().catch(() => {});
