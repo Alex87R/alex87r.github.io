@@ -18,7 +18,7 @@ html, body {
   background: black;
 }
 
-/* видео фон */
+/* видео */
 video.bg {
   position: fixed;
   top: 0;
@@ -27,16 +27,29 @@ video.bg {
   height: 100%;
   object-fit: cover;
 
-  /* ВАЖНО: вместо отрицательного z-index */
+  opacity: 0;
+  transition: opacity 2s ease;
+
   z-index: 0;
 }
 
-/* затемнение (чтобы текст был читаемым) */
+video.bg.show {
+  opacity: 1;
+}
+
+/* чёрный экран */
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.2);
+  background: black;
   z-index: 1;
+  opacity: 1;
+  transition: opacity 2s ease;
+}
+
+.overlay.hide {
+  opacity: 0;
+  pointer-events: none;
 }
 
 /* таймер */
@@ -58,10 +71,10 @@ video.bg {
     0 0 6px rgba(0,0,0,0.6),
     0 0 12px rgba(255,255,255,0.25);
 
+  z-index: 2;
+
   opacity: 0;
   animation: fadeInUp 1.5s ease forwards;
-
-  z-index: 2;
 }
 
 @keyframes fadeInUp {
@@ -82,7 +95,8 @@ video.bg {
   font-family: Arial, sans-serif;
   font-size: 14px;
   opacity: 0.7;
-  text-align: center;
+
+  transition: opacity .5s;
 
   z-index: 2;
 }
@@ -91,13 +105,13 @@ video.bg {
 
 <body>
 
-<!-- видео фон -->
+<!-- видео -->
 <video class="bg" autoplay muted loop playsinline>
   <source src="video/background.mp4" type="video/mp4">
 </video>
 
-<!-- затемнение -->
-<div class="overlay"></div>
+<!-- чёрный фон -->
+<div class="overlay" id="overlay"></div>
 
 <!-- музыка -->
 <audio id="music" loop>
@@ -108,7 +122,9 @@ video.bg {
 <div class="timer" id="timer">Загрузка...</div>
 
 <!-- подсказка -->
-<div class="hint">Нажмите в любом месте экрана, чтобы включить звук 🔊</div>
+<div class="hint" id="hint">
+  Нажмите в любом месте экрана, чтобы включить звук 🔊
+</div>
 
 <script>
 
@@ -135,11 +151,33 @@ function updateTimer() {
 updateTimer();
 setInterval(updateTimer, 1000);
 
-/* музыка по клику */
+const overlay = document.getElementById("overlay");
+const hint = document.getElementById("hint");
+const music = document.getElementById("music");
+const video = document.querySelector("video.bg");
+
 document.addEventListener("click", () => {
-  const music = document.getElementById("music");
+
+  // видео появляется
+  video.classList.add("show");
+
+  // убрать чёрный экран
+  overlay.classList.add("hide");
+
+  // убрать текст
+  hint.style.opacity = "0";
+  setTimeout(() => hint.style.display = "none", 500);
+
+  // 🎵 МУЗЫКА (строго после клика)
   music.volume = 0.5;
-  music.play().catch(() => {});
+  const playPromise = music.play();
+
+  if (playPromise !== undefined) {
+    playPromise.catch(() => {
+      console.log("Автовоспроизведение заблокировано браузером");
+    });
+  }
+
 }, { once: true });
 
 </script>
