@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cinematic Countdown</title>
+    <title>Cinematic Background</title>
 
     <link rel="stylesheet" href="style.css">
 </head>
@@ -11,14 +11,9 @@
 <body>
 
     <!-- 🎥 ФОН -->
-    <video id="bgVideo" autoplay muted loop playsinline>
+    <video id="bgVideo" autoplay muted loop playsinline preload="auto">
         <source src="video/background.mp4" type="video/mp4">
     </video>
-
-    <!-- ⏳ ТАЙМЕР -->
-    <div class="overlay">
-        <div id="timer"></div>
-    </div>
 
     <!-- 🎵 МУЗЫКА -->
     <audio id="bgMusic" loop>
