@@ -17,13 +17,13 @@ html, body {
 }
 
 /* =========================
-   CINEMATIC INTRO (8 сек)
+   BODY INTRO (мягкий cinematic)
 ========================= */
 
 body {
     opacity: 0;
     animation: fadeIn 3s ease forwards;
-    animation-delay: 8s;
+    animation-delay: 0.5s;
 }
 
 @keyframes fadeIn {
@@ -52,6 +52,21 @@ body {
     object-position: center;
 
     z-index: -1;
+
+    opacity: 0;
+    transform: none !important;
+}
+
+/* fade-in видео */
+@keyframes videoFadeIn {
+    from {
+        opacity: 0;
+        filter: brightness(0.2);
+    }
+    to {
+        opacity: 1;
+        filter: brightness(1);
+    }
 }
 
 /* =========================
@@ -88,6 +103,8 @@ body {
         0 0 10px rgba(255,255,255,.45),
         0 0 30px rgba(255,255,255,.25),
         0 0 80px rgba(0,0,0,.9);
+
+    will-change: opacity, transform;
 }
 
 /* =========================
@@ -97,8 +114,8 @@ body {
 .digit {
     display: inline-block;
     opacity: 0;
-    transform: translateY(10px);
-    animation: digitIn 0.4s ease forwards;
+    transform: translateY(12px);
+    animation: digitIn 0.5s ease forwards;
 }
 
 @keyframes digitIn {
