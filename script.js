@@ -8,15 +8,15 @@ let interval;
 let timerStarted = false;
 
 /* =========================
-   ФОРМАТ С ПРОБЕЛАМИ
+   FORMAT TIME
 ========================= */
 
 function formatTime(d, h, m, s) {
-    return `${d} ч ${h} м ${m} с`;
+    return `${d} д ${h} ч ${m} м ${s} с`;
 }
 
 /* =========================
-   АНИМАЦИЯ ЦИФР
+   DIGIT ANIMATION
 ========================= */
 
 function formatWithAnimation(text) {
@@ -75,7 +75,7 @@ function startTimer() {
 
 window.addEventListener("load", () => {
 
-    /* AUDIO */
+    /* 🎵 MUSIC */
     if (music) {
         music.volume = 0.4;
 
@@ -86,21 +86,21 @@ window.addEventListener("load", () => {
         });
     }
 
-    /* VIDEO */
+    /* 🎥 VIDEO */
     if (video) {
         video.muted = true;
         video.volume = 0;
         video.play().catch(() => {});
     }
 
-    /* 🎥 VIDEO FADE 4s → 16s */
+    /* 🎥 fade 0 → 7 sec */
     setTimeout(() => {
-        video.style.animation = "videoFadeIn 12s linear forwards";
-    }, 4000);
+        video.style.animation = "videoFadeIn 7s linear forwards";
+    }, 0);
 
-    /* ⏳ TIMER SHOW + START 17s */
+    /* ⏳ timer show at 16 sec */
     setTimeout(() => {
         timer.style.opacity = "1";
         startTimer();
-    }, 17000);
+    }, 16000);
 });
