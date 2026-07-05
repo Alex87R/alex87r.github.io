@@ -5,7 +5,6 @@
 <title>Таймер</title>
 
 <style>
-/* Подключение шрифта */
 @font-face {
   font-family: "MyFont";
   src: url("font/MyFont.ttf");
@@ -31,13 +30,16 @@ video {
 /* Таймер */
 .timer {
   position: absolute;
-  top: 40%; /* чуть выше центра */
+  top: 40%;
   left: 50%;
   transform: translate(-50%, -60%);
 
   color: white;
   font-family: "MyFont", sans-serif;
-  font-size: 60px;
+
+  /* авто-адаптация */
+  font-size: clamp(28px, 6vw, 78px);
+
   text-align: center;
   text-shadow: 0 0 10px rgba(0,0,0,0.7);
 
@@ -45,10 +47,18 @@ video {
   animation: fadeInUp 1.5s ease forwards;
 }
 
-/* Анимация появления */
+/* анимация появления */
 @keyframes fadeInUp {
   to {
     opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+/* доп. адаптация для телефонов */
+@media (max-width: 600px) {
+  .timer {
+    top: 45%;
     transform: translate(-50%, -50%);
   }
 }
@@ -57,12 +67,12 @@ video {
 
 <body>
 
-<!-- Видео фон -->
+<!-- видео фон -->
 <video autoplay muted loop playsinline>
   <source src="video/background.mp4" type="video/mp4">
 </video>
 
-<!-- Таймер -->
+<!-- таймер -->
 <div class="timer" id="timer">Загрузка...</div>
 
 <script>
