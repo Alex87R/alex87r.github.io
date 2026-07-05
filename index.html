@@ -2,123 +2,192 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Таймер</title>
 
 <style>
+
 @font-face {
-  font-family: "MyFont";
-  src: url("font/MyFont.ttf");
+    font-family: "MyFont";
+    src: url("font/MyFont.ttf");
 }
 
 html, body {
-  margin: 0;
-  height: 100%;
-  overflow: hidden;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #000;
 }
 
-/* видео фон */
+/* Видео */
 video.bg {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: -1;
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -2;
 }
 
-/* таймер */
+/* Контейнер таймера */
+.timer-container {
+    position: fixed;
+    inset: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* немного выше центра */
+    transform: translateY(-10vh);
+
+    pointer-events: none;
+}
+
+/* Таймер */
 .timer {
-  position: absolute;
-  top: 40%;
-  left: 50%;
-  transform: translate(-50%, -60%);
 
-  color: white;
-  font-family: "MyFont", sans-serif;
-  font-size: clamp(34px, 7.2vw, 94px);
+    font-family: "MyFont", sans-serif;
+    color: white;
 
-  text-align: center;
+    font-size: clamp(34px, 7.2vw, 94px);
 
-  -webkit-text-stroke: 1px black;
+    text-align: center;
 
-  text-shadow:
-    0 0 6px rgba(0,0,0,0.6),
-    0 0 12px rgba(255,255,255,0.25);
+    -webkit-text-stroke: 1px black;
 
-  opacity: 0;
-  animation: fadeInUp 1.5s ease forwards;
+    text-shadow:
+        0 0 6px rgba(0,0,0,.6),
+        0 0 12px rgba(255,255,255,.25),
+        0 0 20px rgba(255,255,255,.18);
+
+    opacity: 0;
+
+    animation: timerAppear 1.5s ease-out forwards;
 }
 
-@keyframes fadeInUp {
-  to {
-    opacity: 1;
-    transform: translate(-50%, -50%);
-  }
+/* Одинаковая анимация */
+@keyframes timerAppear {
+
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-/* подсказка снизу */
+/* Подсказка */
 .hint {
-  position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
 
-  color: white;
-  font-family: Arial, sans-serif;
-  font-size: 14px;
-  opacity: 0.7;
-  text-align: center;
+    position: fixed;
+
+    left: 50%;
+    bottom: 20px;
+
+    transform: translateX(-50%);
+
+    color: white;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+
+    opacity: .75;
+
+    transition: opacity .5s;
 }
+
+/* Телефон */
+@media (max-width:600px){
+
+    .timer-container{
+        transform: translateY(-8vh);
+    }
+
+    .hint{
+        width:90%;
+        font-size:13px;
+    }
+
+}
+
 </style>
 </head>
 
 <body>
 
-<!-- видео фон -->
+<!-- Видео -->
 <video class="bg" autoplay muted loop playsinline>
-  <source src="video/background.mp4" type="video/mp4">
+    <source src="video/background.mp4" type="video/mp4">
 </video>
 
-<!-- музыка -->
+<!-- Музыка -->
 <audio id="music" loop>
-  <source src="audio/music.mp3" type="audio/mpeg">
+    <source src="audio/music.mp3" type="audio/mpeg">
 </audio>
 
-<!-- таймер -->
-<div class="timer" id="timer">Загрузка...</div>
+<!-- Таймер -->
+<div class="timer-container">
+    <div class="timer" id="timer">Загрузка...</div>
+</div>
 
-<!-- подсказка -->
-<div class="hint">Нажмите в любом месте экрана, чтобы включить звук 🔊</div>
+<!-- Подсказка -->
+<div class="hint" id="hint">
+    Нажмите в любом месте экрана, чтобы включить звук 🔊
+</div>
 
 <script>
+
+// Дата окончания
 const targetDate = new Date("2026-12-31T00:00:00").getTime();
 
-function updateTimer() {
-  const now = new Date().getTime();
-  const diff = targetDate - now;
+function updateTimer(){
 
-  if (diff <= 0) {
-    document.getElementById("timer").innerHTML = "Время вышло!";
-    return;
-  }
+    const now = Date.now();
+    const diff = targetDate - now;
 
-  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-  const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    if(diff <= 0){
+        document.getElementById("timer").textContent = "Время вышло!";
+        return;
+    }
 
-  document.getElementById("timer").innerHTML =
-    `${days}д ${hours}ч ${minutes}м ${seconds}с`;
+    const days = Math.floor(diff / 86400000);
+
+    const hours = Math.floor((diff % 86400000) / 3600000);
+
+    const minutes = Math.floor((diff % 3600000) / 60000);
+
+    const seconds = Math.floor((diff % 60000) / 1000);
+
+    document.getElementById("timer").textContent =
+        `${days}д ${hours}ч ${minutes}м ${seconds}с`;
+
 }
 
 updateTimer();
-setInterval(updateTimer, 1000);
+setInterval(updateTimer,1000);
 
-/* музыка */
-document.addEventListener("click", () => {
-  document.getElementById("music").play();
-});
+
+// Включение музыки по первому клику
+const music = document.getElementById("music");
+const hint = document.getElementById("hint");
+
+document.addEventListener("click", function () {
+
+    music.volume = 0.5;
+    music.play();
+
+    hint.style.opacity = "0";
+
+    setTimeout(() => {
+        hint.style.display = "none";
+    },500);
+
+}, { once:true });
+
 </script>
 
 </body>
