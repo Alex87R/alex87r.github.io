@@ -59,17 +59,14 @@ video.bg.show {
   pointer-events: none;
 }
 
-/* ТАЙМЕР — стабильное поднятие */
+/* ТАЙМЕР (ИСПРАВЛЕНО ДЛЯ ВСЕХ УСТРОЙСТВ) */
 .timer {
   position: fixed;
   inset: 0;
 
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-
-  /* 🔥 ключевое смещение вверх */
-  padding-top: 35vh;
+  align-items: center;
 
   color: white;
   font-family: "MyFont", sans-serif;
@@ -87,13 +84,9 @@ video.bg.show {
 
   opacity: 0;
   animation: fadeInUp 1.5s ease forwards;
-}
 
-/* адаптация под телефон */
-@media (max-width: 768px) {
-  .timer {
-    padding-top: 28vh;
-  }
+  /* 🔥 ГЛАВНОЕ ИСПРАВЛЕНИЕ */
+  transform: translateY(-8%);
 }
 
 /* ПОДСКАЗКА */
@@ -116,12 +109,8 @@ video.bg.show {
 
 /* АНИМАЦИЯ */
 @keyframes fadeInUp {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 </style>
 </head>
