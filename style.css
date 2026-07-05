@@ -17,37 +17,14 @@ html, body {
 }
 
 /* =========================
-   BODY INTRO (мягкий cinematic)
-========================= */
-
-body {
-    opacity: 0;
-    animation: fadeIn 3s ease forwards;
-    animation-delay: 0.5s;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        filter: brightness(0);
-    }
-    to {
-        opacity: 1;
-        filter: brightness(1);
-    }
-}
-
-/* =========================
-   VIDEO (БЕЗ ЗУМА)
+   VIDEO (fade 0 → 7 sec)
 ========================= */
 
 #bgVideo {
     position: fixed;
     inset: 0;
-
     width: 100%;
     height: 100%;
-
     object-fit: cover;
     object-position: center;
 
@@ -57,7 +34,7 @@ body {
     transform: none !important;
 }
 
-/* fade-in видео */
+/* fade animation */
 @keyframes videoFadeIn {
     from {
         opacity: 0;
@@ -70,23 +47,17 @@ body {
 }
 
 /* =========================
-   OVERLAY
+   TIMER
 ========================= */
 
 .overlay {
     width: 100%;
     height: 100vh;
-
     display: flex;
     justify-content: center;
     align-items: center;
-
     padding-bottom: 12vh;
 }
-
-/* =========================
-   TIMER
-========================= */
 
 #timer {
     opacity: 0;
@@ -103,12 +74,10 @@ body {
         0 0 10px rgba(255,255,255,.45),
         0 0 30px rgba(255,255,255,.25),
         0 0 80px rgba(0,0,0,.9);
-
-    will-change: opacity, transform;
 }
 
 /* =========================
-   DIGIT ANIMATION
+   DIGITS ANIMATION
 ========================= */
 
 .digit {
@@ -125,10 +94,7 @@ body {
     }
 }
 
-/* =========================
-   RESPONSIVE
-========================= */
-
+/* responsive */
 @media (max-width: 768px) {
     #timer {
         font-size: 60px;
