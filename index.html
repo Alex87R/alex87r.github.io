@@ -12,104 +12,115 @@
     src: url("font/MyFont.ttf");
 }
 
-html, body {
-    margin: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    background: #000;
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html,body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:#000;
 }
 
 /* Видео */
-video.bg {
-    position: fixed;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: -2;
+video.bg{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    z-index:1;
 }
 
 /* Контейнер таймера */
-.timer-container {
-    position: fixed;
-    inset: 0;
+.timer-container{
+    position:fixed;
+    inset:0;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display:flex;
+    justify-content:center;
+    align-items:center;
 
-    /* немного выше центра */
-    transform: translateY(-10vh);
+    transform:translateY(-10vh);
 
-    pointer-events: none;
+    z-index:2;
+
+    pointer-events:none;
 }
 
 /* Таймер */
-.timer {
+.timer{
 
-    font-family: "MyFont", sans-serif;
-    color: white;
+    color:#fff;
+    font-family:"MyFont",sans-serif;
 
-    font-size: clamp(34px, 7.2vw, 94px);
+    font-size:clamp(34px,7.2vw,94px);
 
-    text-align: center;
+    text-align:center;
 
-    -webkit-text-stroke: 1px black;
+    -webkit-text-stroke:1px #000;
 
     text-shadow:
         0 0 6px rgba(0,0,0,.6),
         0 0 12px rgba(255,255,255,.25),
         0 0 20px rgba(255,255,255,.18);
 
-    opacity: 0;
+    opacity:0;
 
-    animation: timerAppear 1.5s ease-out forwards;
+    animation:timerAppear 1.5s ease-out forwards;
 }
 
-/* Одинаковая анимация */
-@keyframes timerAppear {
+/* Анимация */
+@keyframes timerAppear{
 
-    from {
-        opacity: 0;
-        transform: translateY(30px);
+    from{
+        opacity:0;
+        transform:translateY(30px);
     }
 
-    to {
-        opacity: 1;
-        transform: translateY(0);
+    to{
+        opacity:1;
+        transform:translateY(0);
     }
+
 }
 
 /* Подсказка */
-.hint {
+.hint{
 
-    position: fixed;
+    position:fixed;
 
-    left: 50%;
-    bottom: 20px;
+    left:50%;
+    bottom:20px;
 
-    transform: translateX(-50%);
+    transform:translateX(-50%);
 
-    color: white;
-    font-family: Arial, sans-serif;
-    font-size: 14px;
+    color:#fff;
+    font-family:Arial,sans-serif;
+    font-size:14px;
 
-    opacity: .75;
+    opacity:.75;
 
-    transition: opacity .5s;
+    transition:.5s;
+
+    z-index:3;
 }
 
 /* Телефон */
 @media (max-width:600px){
 
     .timer-container{
-        transform: translateY(-8vh);
+        transform:translateY(-8vh);
     }
 
     .hint{
         width:90%;
         font-size:13px;
+        text-align:center;
     }
 
 }
@@ -155,11 +166,8 @@ function updateTimer(){
     }
 
     const days = Math.floor(diff / 86400000);
-
     const hours = Math.floor((diff % 86400000) / 3600000);
-
     const minutes = Math.floor((diff % 3600000) / 60000);
-
     const seconds = Math.floor((diff % 60000) / 1000);
 
     document.getElementById("timer").textContent =
@@ -170,23 +178,23 @@ function updateTimer(){
 updateTimer();
 setInterval(updateTimer,1000);
 
+// Музыка по первому клику
+const music=document.getElementById("music");
+const hint=document.getElementById("hint");
 
-// Включение музыки по первому клику
-const music = document.getElementById("music");
-const hint = document.getElementById("hint");
+document.addEventListener("click",()=>{
 
-document.addEventListener("click", function () {
+    music.volume=0.5;
 
-    music.volume = 0.5;
-    music.play();
+    music.play().catch(()=>{});
 
-    hint.style.opacity = "0";
+    hint.style.opacity="0";
 
-    setTimeout(() => {
-        hint.style.display = "none";
+    setTimeout(()=>{
+        hint.style.display="none";
     },500);
 
-}, { once:true });
+},{once:true});
 
 </script>
 
