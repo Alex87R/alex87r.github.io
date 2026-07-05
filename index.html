@@ -2,6 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Таймер</title>
 
 <style>
@@ -14,6 +15,7 @@ html, body {
   margin: 0;
   height: 100%;
   overflow: hidden;
+  background: black;
 }
 
 /* видео фон */
@@ -24,7 +26,17 @@ video.bg {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  z-index: -1;
+
+  /* ВАЖНО: вместо отрицательного z-index */
+  z-index: 0;
+}
+
+/* затемнение (чтобы текст был читаемым) */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.2);
+  z-index: 1;
 }
 
 /* таймер */
@@ -48,6 +60,8 @@ video.bg {
 
   opacity: 0;
   animation: fadeInUp 1.5s ease forwards;
+
+  z-index: 2;
 }
 
 @keyframes fadeInUp {
@@ -57,7 +71,7 @@ video.bg {
   }
 }
 
-/* подсказка снизу */
+/* подсказка */
 .hint {
   position: absolute;
   bottom: 20px;
@@ -69,6 +83,8 @@ video.bg {
   font-size: 14px;
   opacity: 0.7;
   text-align: center;
+
+  z-index: 2;
 }
 </style>
 </head>
@@ -79,6 +95,9 @@ video.bg {
 <video class="bg" autoplay muted loop playsinline>
   <source src="video/background.mp4" type="video/mp4">
 </video>
+
+<!-- затемнение -->
+<div class="overlay"></div>
 
 <!-- музыка -->
 <audio id="music" loop>
@@ -92,33 +111,37 @@ video.bg {
 <div class="hint">Нажмите в любом месте экрана, чтобы включить звук 🔊</div>
 
 <script>
+
 const targetDate = new Date("2026-12-31T00:00:00").getTime();
 
 function updateTimer() {
-  const now = new Date().getTime();
+  const now = Date.now();
   const diff = targetDate - now;
 
   if (diff <= 0) {
-    document.getElementById("timer").innerHTML = "Время вышло!";
+    document.getElementById("timer").textContent = "Время вышло!";
     return;
   }
 
-  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-  const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+  const days = Math.floor(diff / 86400000);
+  const hours = Math.floor((diff % 86400000) / 3600000);
+  const minutes = Math.floor((diff % 3600000) / 60000);
+  const seconds = Math.floor((diff % 60000) / 1000);
 
-  document.getElementById("timer").innerHTML =
+  document.getElementById("timer").textContent =
     `${days}д ${hours}ч ${minutes}м ${seconds}с`;
 }
 
 updateTimer();
 setInterval(updateTimer, 1000);
 
-/* музыка */
+/* музыка по клику */
 document.addEventListener("click", () => {
-  document.getElementById("music").play();
-});
+  const music = document.getElementById("music");
+  music.volume = 0.5;
+  music.play().catch(() => {});
+}, { once: true });
+
 </script>
 
 </body>
