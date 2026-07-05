@@ -18,7 +18,6 @@ html, body {
   background: black;
 }
 
-/* фикс для мобильных viewport */
 body {
   min-height: 100vh;
   min-height: 100dvh;
@@ -59,7 +58,7 @@ video.bg.show {
   pointer-events: none;
 }
 
-/* ТАЙМЕР (ИСПРАВЛЕНО ДЛЯ ВСЕХ УСТРОЙСТВ) */
+/* ТАЙМЕР */
 .timer {
   position: fixed;
   inset: 0;
@@ -85,11 +84,10 @@ video.bg.show {
   opacity: 0;
   animation: fadeInUp 1.5s ease forwards;
 
-  /* 🔥 ГЛАВНОЕ ИСПРАВЛЕНИЕ */
   transform: translateY(-8%);
 }
 
-/* ПОДСКАЗКА */
+/* ПОДСКАЗКА (ВАЖНО: добавили transition) */
 .hint {
   position: fixed;
   left: 50%;
@@ -105,6 +103,8 @@ video.bg.show {
   opacity: 0.7;
 
   z-index: 2;
+
+  transition: opacity 0.8s ease; /* 👈 плавное исчезновение */
 }
 
 /* АНИМАЦИЯ */
@@ -175,8 +175,12 @@ document.addEventListener("click", () => {
   video.classList.add("show");
   overlay.classList.add("hide");
 
+  /* плавное исчезновение текста */
   hint.style.opacity = "0";
-  setTimeout(() => hint.style.display = "none", 500);
+
+  setTimeout(() => {
+    hint.style.display = "none";
+  }, 800);
 
   music.volume = 0.5;
   music.play().catch(() => {});
