@@ -87,31 +87,64 @@ video.bg.show {
   transform: translateY(-8%);
 }
 
-/* ПОДСКАЗКА */
-.hint {
-  position: fixed;
-  left: 50%;
-  bottom: 20px;
-  transform: translateX(-50%);
 
-  width: 90%;
-  text-align: center;
+/* СТАРТОВЫЕ НАДПИСИ */
+.start-screen {
+  position: fixed;
+  inset: 0;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
   color: white;
-  font-family: Arial, sans-serif;
-  font-size: 14px;
-  opacity: 0.7;
+  font-family: "MyFont", sans-serif;
+  text-align: center;
 
-  z-index: 2;
+  z-index: 3;
 
-  transition: opacity 0.8s ease;
+  transition: opacity 2s ease;
 }
+
+.start-screen.hide {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.start-title {
+  font-size: clamp(28px, 5vw, 60px);
+
+  -webkit-text-stroke: 1px black;
+
+  text-shadow:
+    0 0 6px rgba(0,0,0,0.6),
+    0 0 12px rgba(255,255,255,0.25);
+}
+
+.start-subtitle {
+  margin-top: 25px;
+
+  width: 85%;
+
+  font-size: clamp(16px, 2.8vw, 32px);
+
+  opacity: 0.9;
+
+  -webkit-text-stroke: 0.5px black;
+
+  text-shadow:
+    0 0 6px rgba(0,0,0,0.6),
+    0 0 10px rgba(255,255,255,0.2);
+}
+
 
 /* АНИМАЦИЯ */
 @keyframes fadeInUp {
   from { opacity: 0; }
   to { opacity: 1; }
 }
+
 </style>
 </head>
 
@@ -125,18 +158,27 @@ video.bg.show {
 <!-- ЧЁРНЫЙ ФОН -->
 <div class="overlay" id="overlay"></div>
 
+<!-- СТАРТОВЫЕ НАДПИСИ -->
+<div class="start-screen" id="startScreen">
+  <div class="start-title">
+    Нажмите в любом месте экрана, чтобы начать
+  </div>
+
+  <div class="start-subtitle">
+    Для полного погружения переверните ваше устройство горизонтально
+  </div>
+</div>
+
+
 <!-- МУЗЫКА -->
 <audio id="music" loop>
   <source src="audio/music.mp3" type="audio/mpeg">
 </audio>
 
+
 <!-- ТАЙМЕР -->
 <div class="timer" id="timer">Загрузка...</div>
 
-<!-- ПОДСКАЗКА -->
-<div class="hint" id="hint">
-  Нажмите в любом месте экрана, чтобы включить звук 🔊
-</div>
 
 <script>
 
@@ -163,23 +205,32 @@ function updateTimer() {
 updateTimer();
 setInterval(updateTimer, 1000);
 
+
 const overlay = document.getElementById("overlay");
-const hint = document.getElementById("hint");
+const startScreen = document.getElementById("startScreen");
 const music = document.getElementById("music");
 const video = document.querySelector("video.bg");
 
+
 document.addEventListener("click", () => {
 
+  // Плавное исчезновение стартовых надписей
+  startScreen.classList.add("hide");
+
+  // Плавное появление видео
   video.classList.add("show");
+
+  // Убираем черный экран
   overlay.classList.add("hide");
 
-  hint.style.opacity = "0";
-  setTimeout(() => hint.style.display = "none", 800);
 
+  // Запуск музыки
   music.volume = 0.5;
   music.play().catch(() => {});
 
+
 }, { once: true });
+
 
 </script>
 
