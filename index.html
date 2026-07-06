@@ -42,11 +42,12 @@ video.bg.show {
   opacity: 1;
 }
 
-/* ЧЁРНЫЙ ЭКРАН */
+/* ЧЁРНЫЙ ФОН */
 .overlay {
   position: fixed;
   inset: 0;
   background: black;
+
   z-index: 1;
 
   opacity: 1;
@@ -58,7 +59,8 @@ video.bg.show {
   pointer-events: none;
 }
 
-/* Обратный отсчет */
+
+/* ТАЙМЕР */
 .timer {
   position: fixed;
   inset: 0;
@@ -68,6 +70,7 @@ video.bg.show {
   align-items: center;
 
   color: white;
+
   font-family: "MyFont", sans-serif;
   font-size: clamp(34px, 7.2vw, 94px);
 
@@ -82,9 +85,13 @@ video.bg.show {
   z-index: 2;
 
   opacity: 0;
-  animation: fadeInUp 1.5s ease forwards;
+  transition: opacity 2s ease;
 
   transform: translateY(-8%);
+}
+
+.timer.show {
+  opacity: 1;
 }
 
 
@@ -99,11 +106,14 @@ video.bg.show {
   align-items: center;
 
   color: white;
+
   font-family: "MyFont", sans-serif;
+
   text-align: center;
 
   z-index: 3;
 
+  opacity: 1;
   transition: opacity 2s ease;
 }
 
@@ -112,7 +122,9 @@ video.bg.show {
   pointer-events: none;
 }
 
+
 .start-title {
+
   font-size: clamp(28px, 5vw, 60px);
 
   -webkit-text-stroke: 1px black;
@@ -122,7 +134,9 @@ video.bg.show {
     0 0 12px rgba(255,255,255,0.25);
 }
 
+
 .start-subtitle {
+
   margin-top: 25px;
 
   width: 85%;
@@ -138,28 +152,26 @@ video.bg.show {
     0 0 10px rgba(255,255,255,0.2);
 }
 
-
-/* АНИМАЦИЯ */
-@keyframes fadeInUp {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
 </style>
 </head>
 
+
 <body>
+
 
 <!-- ВИДЕО -->
 <video class="bg" autoplay muted loop playsinline>
   <source src="video/background.mp4" type="video/mp4">
 </video>
 
+
 <!-- ЧЁРНЫЙ ФОН -->
 <div class="overlay" id="overlay"></div>
 
+
 <!-- СТАРТОВЫЕ НАДПИСИ -->
 <div class="start-screen" id="startScreen">
+
   <div class="start-title">
     Нажмите в любом месте экрана, чтобы начать
   </div>
@@ -167,6 +179,7 @@ video.bg.show {
   <div class="start-subtitle">
     Для полного погружения переверните ваше устройство горизонтально
   </div>
+
 </div>
 
 
@@ -177,62 +190,111 @@ video.bg.show {
 
 
 <!-- ТАЙМЕР -->
-<div class="timer" id="timer">Загрузка...</div>
+<div class="timer" id="timer">
+  Загрузка...
+</div>
+
 
 
 <script>
 
+
 const targetDate = new Date("2026-12-31T00:00:00").getTime();
 
+
 function updateTimer() {
+
   const now = Date.now();
+
   const diff = targetDate - now;
 
+
   if (diff <= 0) {
-    document.getElementById("timer").textContent = "Время вышло!";
+
+    document.getElementById("timer").textContent =
+      "Время вышло!";
+
     return;
   }
 
-  const days = Math.floor(diff / 86400000);
-  const hours = Math.floor((diff % 86400000) / 3600000);
-  const minutes = Math.floor((diff % 3600000) / 60000);
-  const seconds = Math.floor((diff % 60000) / 1000);
+
+  const days =
+    Math.floor(diff / 86400000);
+
+  const hours =
+    Math.floor((diff % 86400000) / 3600000);
+
+  const minutes =
+    Math.floor((diff % 3600000) / 60000);
+
+  const seconds =
+    Math.floor((diff % 60000) / 1000);
+
 
   document.getElementById("timer").textContent =
     `${days}д ${hours}ч ${minutes}м ${seconds}с`;
 }
 
+
 updateTimer();
+
 setInterval(updateTimer, 1000);
 
 
+
 const overlay = document.getElementById("overlay");
-const startScreen = document.getElementById("startScreen");
-const music = document.getElementById("music");
-const video = document.querySelector("video.bg");
+
+const startScreen =
+  document.getElementById("startScreen");
+
+const music =
+  document.getElementById("music");
+
+const video =
+  document.querySelector("video.bg");
+
+const timer =
+  document.getElementById("timer");
+
 
 
 document.addEventListener("click", () => {
 
-  // Плавное исчезновение стартовых надписей
+
+  // скрываем стартовые надписи
   startScreen.classList.add("hide");
 
-  // Плавное появление видео
+
+  // показываем видео
   video.classList.add("show");
 
-  // Убираем черный экран
+
+  // убираем чёрный фон
   overlay.classList.add("hide");
 
 
-  // Запуск музыки
+
+  // плавное появление таймера
+  setTimeout(() => {
+
+    timer.classList.add("show");
+
+  }, 300);
+
+
+
+  // запуск музыки
   music.volume = 0.5;
+
   music.play().catch(() => {});
 
 
 }, { once: true });
 
 
+
 </script>
+
 
 </body>
 </html>
