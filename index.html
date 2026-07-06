@@ -195,8 +195,6 @@ video.bg.show {
   text-shadow:
     0 0 6px rgba(0,0,0,0.6),
     0 0 12px rgba(255,255,255,0.25);
-
-  animation: titlePulse 3.5s ease-in-out infinite;
 }
 
 .start-subtitle {
@@ -214,32 +212,7 @@ video.bg.show {
   text-shadow:
     0 0 6px rgba(0,0,0,0.6),
     0 0 10px rgba(255,255,255,0.2);
-
-  animation: titlePulse 3.5s ease-in-out infinite;
-  animation-delay: .5s;
 }
-
-/* Анимация "живого" текста */
-@keyframes titlePulse {
-
-  0%,
-  100% {
-    transform: scale(1);
-    opacity: .92;
-    text-shadow:
-      0 0 6px rgba(0,0,0,0.6),
-      0 0 12px rgba(255,255,255,0.25);
-  }
-
-  50% {
-    transform: scale(1.03);
-    opacity: 1;
-    text-shadow:
-      0 0 8px rgba(0,0,0,0.6),
-      0 0 24px rgba(255,255,255,0.55);
-  }
-}
-
 
 </style>
 
