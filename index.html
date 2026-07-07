@@ -6,12 +6,10 @@
 <title>Обратный отсчет</title>
 
 <style>
-
 @font-face {
   font-family: "MyFont";
   src: url("font/MyFont.ttf");
 }
-
 
 html, body {
   margin: 0;
@@ -20,408 +18,94 @@ html, body {
   background: black;
 }
 
-
 body {
   min-height: 100vh;
   min-height: 100dvh;
 }
 
-
-/* ВИДЕО */
-video.bg {
-
-  position: fixed;
-  top: 0;
-  left: 0;
-
-  width: 100%;
-  height: 100%;
-
-  object-fit: cover;
-
-  opacity: 0;
-
-  transition: opacity 2s ease;
-
-  z-index: 0;
+video.bg{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  object-fit:cover;opacity:0;transition:opacity 2s ease;z-index:0;
 }
+video.bg.show{opacity:1;}
 
-
-video.bg.show {
-
-  opacity: 1;
-
+.overlay{
+  position:fixed;inset:0;background:black;z-index:1;opacity:1;
+  transition:opacity 3s ease-in-out;
 }
+.overlay.hide{opacity:0;pointer-events:none;}
 
-
-/* ЧЁРНЫЙ ФОН */
-.overlay {
-
-  position: fixed;
-
-  inset: 0;
-
-  background: black;
-
-  z-index: 1;
-
-  opacity: 1;
-
-  transition: opacity 2s ease;
-
+.timer{
+  position:fixed;inset:0;display:flex;justify-content:center;align-items:center;
+  color:#fff;font-family:"MyFont",sans-serif;
+  font-size:clamp(34px,7.2vw,94px);
+  text-align:center;
+  -webkit-text-stroke:1px black;
+  text-shadow:0 0 6px rgba(0,0,0,.6),0 0 12px rgba(255,255,255,.25);
+  z-index:2;opacity:0;transition:opacity 2s ease;
+  transform:translateY(-8%);
 }
+.timer.show{opacity:1;}
 
-
-.overlay.hide {
-
-  opacity: 0;
-
-  pointer-events: none;
-
+.start-screen{
+  position:fixed;inset:0;display:flex;flex-direction:column;
+  justify-content:center;align-items:center;color:#fff;
+  font-family:"MyFont",sans-serif;text-align:center;
+  z-index:3;opacity:1;transition:opacity 3s ease-in-out;
+  animation:none;transform:none;
 }
+.start-screen.hide{opacity:0;pointer-events:none;}
 
-
-
-/* ТАЙМЕР */
-.timer {
-
-  position: fixed;
-
-  inset: 0;
-
-  display: flex;
-
-  justify-content: center;
-
-  align-items: center;
-
-
-  color: white;
-
-  font-family: "MyFont", sans-serif;
-
-  font-size: clamp(34px, 7.2vw, 94px);
-
-
-  text-align: center;
-
-
-  -webkit-text-stroke: 1px black;
-
-
-  text-shadow:
-
-    0 0 6px rgba(0,0,0,0.6),
-
-    0 0 12px rgba(255,255,255,0.25);
-
-
-  z-index: 2;
-
-
-  opacity: 0;
-
-  transition: opacity 2s ease;
-
-
-  transform: translateY(-8%);
-
+.start-title{
+  width:min(90vw,1000px);padding:0 20px;box-sizing:border-box;
+  font-size:clamp(24px,5vw,60px);line-height:1.25;color:#fff;
+  -webkit-text-stroke:0;text-shadow:none;white-space:normal;
+  overflow-wrap:break-word;word-break:normal;
 }
-
-
-
-.timer.show {
-
-  opacity: 1;
-
+.start-subtitle{
+  margin-top:22px;width:min(90vw,900px);padding:0 20px;
+  box-sizing:border-box;font-size:clamp(15px,2.7vw,30px);
+  line-height:1.45;color:#fff;opacity:.9;
+  -webkit-text-stroke:0;text-shadow:none;
+  white-space:normal;overflow-wrap:break-word;word-break:normal;
 }
-
-
-
-/* СТАРТОВЫЕ НАДПИСИ */
-.start-screen {
-
-  position: fixed;
-
-  inset: 0;
-
-
-  display: flex;
-
-  flex-direction: column;
-
-  justify-content: center;
-
-  align-items: center;
-
-
-  color: white;
-
-
-  font-family: "MyFont", sans-serif;
-
-
-  text-align: center;
-
-
-  z-index: 3;
-
-
-  opacity: 1;
-
-  transition: opacity 2s ease;
-
+@media (max-width:768px){
+.start-title{width:92vw;font-size:clamp(22px,7vw,40px);}
+.start-subtitle{width:92vw;margin-top:18px;font-size:clamp(14px,4vw,22px);}
 }
-
-
-
-.start-screen.hide {
-
-  opacity: 0;
-
-  pointer-events: none;
-
-}
-
-
-
-/* СТАРТОВЫЕ НАДПИСИ */
-.start-title {
-
-  font-size: clamp(28px, 5vw, 60px);
-
-  -webkit-text-stroke: 1px black;
-
-  text-shadow:
-    0 0 6px rgba(0,0,0,0.6),
-    0 0 12px rgba(255,255,255,0.25);
-}
-
-.start-subtitle {
-
-  margin-top: 25px;
-
-  width: 85%;
-
-  font-size: clamp(16px, 2.8vw, 32px);
-
-  opacity: 0.9;
-
-  -webkit-text-stroke: 0.5px black;
-
-  text-shadow:
-    0 0 6px rgba(0,0,0,0.6),
-    0 0 10px rgba(255,255,255,0.2);
-}
-
 </style>
-
 </head>
-
-
 <body>
-
-
-<!-- ВИДЕО -->
-
-<video class="bg" muted loop playsinline preload="none">
-  
-  <source src="video/background.mp4" type="video/mp4">
-  
-</video>
-
-
-
-<!-- ЧЁРНЫЙ ФОН -->
-
+<video class="bg" muted loop playsinline preload="none"><source src="video/background.mp4" type="video/mp4"></video>
 <div class="overlay" id="overlay"></div>
-
-
-
-<!-- СТАРТОВЫЕ НАДПИСИ -->
-
 <div class="start-screen" id="startScreen">
-
-
-  <div class="start-title">
-
-    Нажмите в любом месте экрана, чтобы начать
-
-  </div>
-
-
-  <div class="start-subtitle">
-
-    Для полного погружения переверните ваше устройство горизонтально
-
-  </div>
-
-
+<div class="start-title">Нажмите в любом месте экрана, чтобы начать</div>
+<div class="start-subtitle">Для полного погружения переверните ваше устройство горизонтально</div>
 </div>
-
-
-
-<!-- МУЗЫКА -->
-
-<audio id="music" loop>
-
-  <source src="audio/music.mp3" type="audio/mpeg">
-
-</audio>
-
-
-
-<!-- ТАЙМЕР -->
-
-<div class="timer" id="timer">
-
-  Загрузка...
-
-</div>
-
-
-
+<audio id="music" loop><source src="audio/music.mp3" type="audio/mpeg"></audio>
+<div class="timer" id="timer">Загрузка...</div>
 <script>
-
-
-const targetDate =
-  new Date("2026-12-31T00:00:00").getTime();
-
-
-
-function updateTimer() {
-
-
-  const now = Date.now();
-
-
-  const diff = targetDate - now;
-
-
-
-  if (diff <= 0) {
-
-
-    document.getElementById("timer").textContent =
-      "Время вышло!";
-
-
-    return;
-
-  }
-
-
-
-  const days =
-    Math.floor(diff / 86400000);
-
-
-
-  const hours =
-    Math.floor((diff % 86400000) / 3600000);
-
-
-
-  const minutes =
-    Math.floor((diff % 3600000) / 60000);
-
-
-
-  const seconds =
-    Math.floor((diff % 60000) / 1000);
-
-
-
-  document.getElementById("timer").textContent =
-
-    `${days}д ${hours}ч ${minutes}м ${seconds}с`;
-
+const targetDate=new Date("2026-12-31T00:00:00").getTime();
+function updateTimer(){
+ const diff=targetDate-Date.now();
+ if(diff<=0){timer.textContent="Время вышло!";return;}
+ const d=Math.floor(diff/86400000),h=Math.floor(diff%86400000/3600000),
+ m=Math.floor(diff%3600000/60000),s=Math.floor(diff%60000/1000);
+ timer.textContent=`${d}д ${h}ч ${m}м ${s}с`;
 }
-
-
-
-updateTimer();
-
-setInterval(updateTimer, 1000);
-
-
-
-const overlay =
-  document.getElementById("overlay");
-
-
-const startScreen =
-  document.getElementById("startScreen");
-
-
-const music =
-  document.getElementById("music");
-
-
-const video =
-  document.querySelector("video.bg");
-
-
-const timer =
-  document.getElementById("timer");
-
-
-
-
-document.addEventListener("click", () => {
-
-
-
-  // исчезновение стартовых надписей
-
-  startScreen.classList.add("hide");
-
-
-
-  // запуск и появление видео
-  
-video.play().then(() => {
-  
-    video.classList.add("show");
-  
-}).catch(() => {});
-
-
-
-  // исчезновение чёрного фона
-
-  overlay.classList.add("hide");
-
-
-
-  // таймер появляется только после окончания перехода
-
-  setTimeout(() => {
-
-
-    timer.classList.add("show");
-
-
-  }, 2000);
-
-
-
-
-  // запуск музыки
-
-  music.volume = 0.5;
-
-
-  music.play().catch(() => {});
-
-
-
-}, { once: true });
-
-
-
+const overlay=document.getElementById("overlay");
+const startScreen=document.getElementById("startScreen");
+const music=document.getElementById("music");
+const video=document.querySelector("video.bg");
+const timer=document.getElementById("timer");
+updateTimer();setInterval(updateTimer,1000);
+document.addEventListener("click",()=>{
+ startScreen.classList.add("hide");
+ video.play().then(()=>video.classList.add("show")).catch(()=>{});
+ overlay.classList.add("hide");
+ setTimeout(()=>timer.classList.add("show"),3000);
+ music.volume=0.5;music.play().catch(()=>{});
+},{once:true});
 </script>
-
-
 </body>
 </html>
